@@ -15,8 +15,10 @@ class LinksController extends Controller
 
     public function store()
     {
-        $test = DB::table('links')->count(); 
-        $params = $_POST['limit'];
-        return $params;
+        $params = $_POST;
+        $total = DB::table('links')->count(); 
+        $rows = DB::table('links')->skip($params['offset'])->take($params['limit'])->get();
+        $data = array("rows" => $rows, "total" => $total);
+        return json_encode($data);
     }
 }
