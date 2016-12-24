@@ -10,7 +10,8 @@
 <!-- 可选的Bootstrap主题文件（一般不用引入） -->
 <link rel="stylesheet" href="/bootstrap/css/bootstrap-theme.min.css">
 
-<link rel="stylesheet" src="/boottable/dist/bootstrap-table.min.css">
+<!--link rel="stylesheet" src="/boottable/dist/bootstrap-table.min.css"-->
+<link rel="stylesheet" href="/boottable/dist/bootstrap-table.min.css">
 
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script src="/js/jquery.min.js"></script>
@@ -19,6 +20,18 @@
 <script src="/bootstrap/js/bootstrap.min.js"></script>
 
 <script src="/boottable/dist/bootstrap-table.min.js"></script>
+
+<style type="text/css">
+#myTable thead > tr > th.detail,
+#myTable tbody > tr:not(.detail-view) > td:first-of-type {
+  display: none;
+}
+
+#myTable thead > tr > th:nth-child(2),
+#myTable tbody > tr:not(.detail-view) > td:nth-child(2) {
+  border-left: none!important;
+}
+</style>
 
 </head>
 

@@ -15,10 +15,34 @@ class LinksController extends Controller
 
     public function store()
     {
-        $params = $_POST;
-        $total = DB::table('links')->count(); 
-        $rows = DB::table('links')->skip($params['offset'])->take($params['limit'])->get();
-        $data = array("rows" => $rows, "total" => $total);
-        return json_encode($data);
+        if(isset($_POST['data'])){
+          $params = json_decode($_POST['data']);
+          if(isset($params->sort)){
+            $rows = DB::table('links')->skip($params->offset)->take($params->limit)->orderBy($params->sort, $params->order)->get();
+          }
+          else{
+            $rows = DB::table('links')->skip($params->offset)->take($params->limit)->get();
+          }
+          $total = DB::table('links')->count(); 
+          foreach($rows as $row){
+            $row->first = date('Y/m/d H:i:s', $row->first);
+            $row->last = date('Y/m/d H:i:s', $row->last);
+          }
+          $data = array("rows" => $rows, "total" => $total);
+        }
+        else{
+          $field = $_POST['field'];
+          $value = $_POST['value'];
+          if ($field == 'message'){
+            $row = DB::table('messages')->where('id', $value)->first();
+            $row->first = date('Y/m/d H:i:s', $row->first);
+            $row->last = date('Y/m/d H:i:s', $row->last);
+            $data = array("result" => $row);
+          }
+          else{
+            $database == 'asset';
+          }
+        }
+        return $data;
     }
 }
