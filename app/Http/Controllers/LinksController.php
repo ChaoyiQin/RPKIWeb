@@ -40,7 +40,8 @@ class LinksController extends Controller
             $data = array("result" => $row);
           }
           else{
-            $database == 'asset';
+            $row = DB::table('asset')->where('id', substr($value, 1))->first();
+            $data = array("result" => $row);
           }
         }
         return $data;

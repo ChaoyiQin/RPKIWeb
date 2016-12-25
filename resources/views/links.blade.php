@@ -66,6 +66,7 @@ class = "active"
         '</a>'].join('');
     }
     function clickCell(e, field, value, row, $element){
+      $table.bootstrapTable('collapseAllRows');
       if(field == 'as1'){
         var index = $element.parent().data('index');
         column = field; 
@@ -89,7 +90,7 @@ class = "active"
         data:{field:column, value:row[column]},
         success:function(data){
           $.each(data.result, function(key, value){
-            html.push('<div style="word-wrap:break-word; word-break:normal;"><b>' + key + ':</b> ' + value + '</div>');
+            html.push('<p style="word-wrap:break-word; word-break:break-all; width:auto;"><b>' + key + ':</b> ' + value + '</p>');
           });
         }
       });
