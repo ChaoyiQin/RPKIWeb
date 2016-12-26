@@ -1,8 +1,8 @@
 @extends('bgp')
 
-@section('title', 'links')
+@section('title', 'monitors')
 
-@section('links')
+@section('monitors')
 class = "active"
 @endsection
 
@@ -18,13 +18,15 @@ class = "active"
          data-ajax="ajaxRequest"
          data-detail-view="true"
          data-detail-formatter="detailFormatter"
-         data-url="/links">
+         data-url="/monitors">
     <thead>
       <tr>
-        <th data-field="as1" data-formatter="identifierFormatter">AS1</th>
-        <th data-field="as2" data-formatter="identifierFormatter">AS2</th>
+        <th data-field="nexthop">Nexthop</th>
+        <th data-field="asn">ASN</th>
+        <th data-field="peer">Peer</th>
+        <th data-field="peerasn">PeerASN</th>
         <th data-field="type" data-sortable="ture">Type</th>
-        <th data-field="monitors" data-sortable="ture">Monitors</th>
+        <th data-field="prefixes" data-sortable="ture">Prefixes</th>
         <th data-field="message" data-sortable="ture" data-formatter="identifierFormatter">Message</th>
         <th data-field="first" data-sortable="ture">First</th>
         <th data-field="last" data-sortable="ture">Last</th>
@@ -37,7 +39,7 @@ class = "active"
     $table.on('click-cell.bs.table', clickCell);
     var column = '';
     $.ajaxSetup({
-      url: "/links",
+      url: "/monitors",
       type: "POST",
       headers: { 'X-CSRF-TOKEN' : '{{ csrf_token() }}' }
     });
@@ -67,20 +69,6 @@ class = "active"
     }
     function clickCell(e, field, value, row, $element){
       $table.bootstrapTable('collapseAllRows');
-      if(field == 'as1'){
-        var index = $element.parent().data('index');
-        if(value[0] == '#'){
-          column = field; 
-          $table.bootstrapTable('expandRow', index );
-        }
-      }
-      if(field == 'as2'){
-        var index = $element.parent().data('index');
-        if(value[0] == '#'){
-          column = field; 
-          $table.bootstrapTable('expandRow', index );
-        }
-      }
       if(field == 'message'){
         var index = $element.parent().data('index');
         column = field; 

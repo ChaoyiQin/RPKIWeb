@@ -15,3 +15,5 @@ Route::get('/', function () {
     return view('home');
 });
 Route::resource('/links', 'LinksController');
+Route::resource('/monitors', 'MonitorsController');
+Route::resource('/origins', 'OriginsController');

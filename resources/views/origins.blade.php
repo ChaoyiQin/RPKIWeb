@@ -1,14 +1,14 @@
 @extends('bgp')
 
-@section('title', 'links')
+@section('title', 'origins')
 
-@section('links')
+@section('origins')
 class = "active"
 @endsection
 
 @section('content')
   <div class="col-md-12">
-  <center><h1>BGP Links Data</h1></center>
+  <center><h1>BGP Origins Data</h1></center>
   <table id="myTable"
          data-toggle="table" 
          data-method="post"
@@ -18,11 +18,11 @@ class = "active"
          data-ajax="ajaxRequest"
          data-detail-view="true"
          data-detail-formatter="detailFormatter"
-         data-url="/links">
+         data-url="/origins">
     <thead>
       <tr>
-        <th data-field="as1" data-formatter="identifierFormatter">AS1</th>
-        <th data-field="as2" data-formatter="identifierFormatter">AS2</th>
+        <th data-field="prefix">Prefix</th>
+        <th data-field="origin" data-formatter="identifierFormatter">Origin</th>
         <th data-field="type" data-sortable="ture">Type</th>
         <th data-field="monitors" data-sortable="ture">Monitors</th>
         <th data-field="message" data-sortable="ture" data-formatter="identifierFormatter">Message</th>
@@ -37,7 +37,7 @@ class = "active"
     $table.on('click-cell.bs.table', clickCell);
     var column = '';
     $.ajaxSetup({
-      url: "/links",
+      url: "/origins",
       type: "POST",
       headers: { 'X-CSRF-TOKEN' : '{{ csrf_token() }}' }
     });
@@ -67,14 +67,7 @@ class = "active"
     }
     function clickCell(e, field, value, row, $element){
       $table.bootstrapTable('collapseAllRows');
-      if(field == 'as1'){
-        var index = $element.parent().data('index');
-        if(value[0] == '#'){
-          column = field; 
-          $table.bootstrapTable('expandRow', index );
-        }
-      }
-      if(field == 'as2'){
+      if(field == 'origin'){
         var index = $element.parent().data('index');
         if(value[0] == '#'){
           column = field; 
