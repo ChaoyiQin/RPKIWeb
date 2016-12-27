@@ -14,22 +14,33 @@ class MonitorsController extends Controller
 
     public function store()
     {
-        if(isset($_POST['data'])){
+        if($_POST['type'] == 'data'){
           $params = json_decode($_POST['data']);
-          if(isset($params->sort)){
-            $rows = DB::table('monitors')->skip($params->offset)->take($params->limit)->orderBy($params->sort, $params->order)->get();
+          if(strlen($_POST['content']) > 0){
+            if(isset($params->sort)){
+              $rows = DB::table('monitors')->where($_POST['search'], 'like', $_POST['content'].'%')->skip($params->offset)->take($params->limit)->orderBy($params->sort, $params->order)->get();
+            }
+            else{
+              $rows = DB::table('monitors')->where($_POST['search'], 'like', $_POST['content'].'%')->skip($params->offset)->take($params->limit)->get();
+            }
+            $total = DB::table('monitors')->where($_POST['search'], 'like', $_POST['content'].'%')->count();
           }
           else{
-            $rows = DB::table('monitors')->skip($params->offset)->take($params->limit)->get();
+            if(isset($params->sort)){
+              $rows = DB::table('monitors')->skip($params->offset)->take($params->limit)->orderBy($params->sort, $params->order)->get();
+            }
+            else{
+              $rows = DB::table('monitors')->skip($params->offset)->take($params->limit)->get();
+            }
+            $total = DB::table('monitors')->count(); 
           }
-          $total = DB::table('monitors')->count(); 
           foreach($rows as $row){
             $row->first = date('Y/m/d H:i:s', $row->first);
             $row->last = date('Y/m/d H:i:s', $row->last);
           }
           $data = array("rows" => $rows, "total" => $total);
         }
-        else{
+        elseif($_POST['type'] == 'detail'){
           $field = $_POST['field'];
           $value = $_POST['value'];
           if ($field == 'message'){

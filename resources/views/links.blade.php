@@ -9,39 +9,39 @@ class = "active"
 @section('content')
   <div class="col-md-12">
   <center><h1>BGP Links Data</h1></center>
-  <form id="toolbar" form="bs-example bs-example-form" role="form">
-      <div class="input-group col-md-6 col-md-offset-6">
-        <div class="input-group-btn">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            <span id="type">AS1</span>
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li>
-              <a onclick="changeType(this)">AS1</a>
-            </li>
-            <li>
-              <a onclick="changeType(this)">AS2</a>
-            </li>
-            <li>
-              <a onclick="changeType(this)">Type</a>
-            </li>
-            <li>
-              <a onclick="changeType(this)">Monitors</a>
-            </li>
-            <li>
-              <a onclick="changeType(this)">Message</a>
-            </li>
-            <li>
-              <a onclick="changeType(this)">Frequency</a>
-            </li>
-          </ul>
-        </div>
-        <input type="text" class="form-control">
-        <span class="input-group-btn">
-          <button class="btn btn-default" type="button">Search</button>
-        </span>
-      </div><!-- /input-group -->
+  <form id="toolbar" form="bs-example bs-example-form" role="form" onsubmit="searchData(); return false;">
+    <div class="input-group col-md-4 col-md-offset-8">
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <span id="type">AS1</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a onclick="changeType(this)">AS1</a>
+          </li>
+          <li>
+            <a onclick="changeType(this)">AS2</a>
+          </li>
+          <li>
+            <a onclick="changeType(this)">Type</a>
+          </li>
+          <li>
+            <a onclick="changeType(this)">Monitors</a>
+          </li>
+          <li>
+            <a onclick="changeType(this)">Message</a>
+          </li>
+          <li>
+            <a onclick="changeType(this)">Frequency</a>
+          </li>
+        </ul>
+      </div>
+      <input id="content" type="text" class="form-control" value="">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit">Search</button>
+      </span>
+    </div><!-- /input-group -->
   </form>
   <table id="myTable"
          data-toggle="table" 
@@ -72,6 +72,7 @@ class = "active"
     var $table = $('#myTable');
     $table.on('click-cell.bs.table', clickCell);
     var $searchType = $('#type');
+    var $searchContent = $('#content');
     var column = '';
     $.ajaxSetup({
       url: "/links",
@@ -89,8 +90,10 @@ class = "active"
       return temp;
     }*/
     function ajaxRequest(params){
+      var type = $searchType.html().toLowerCase(); 
+      var content = $searchContent.val();
       $.ajax({
-        data: {data:params.data},
+        data: {type: 'data',data:params.data, search: type, content: content},
         success: function(data, status){
           params.success(data);
         }
@@ -128,8 +131,8 @@ class = "active"
       var html = [];
       $.ajax({
         async: false,
-        data:{field:column, value:row[column]},
-        success:function(data){
+        data:{type: 'detail', field:column, value:row[column]},
+        success: function(data){
           $.each(data.result, function(key, value){
             html.push('<p style="word-wrap:break-word; word-break:break-all; width:auto;"><b>' + key + ':</b> ' + value + '</p>');
           });
@@ -139,6 +142,13 @@ class = "active"
     }
     function changeType(obj){
       $searchType.html($(obj).html());
+    }
+    function searchData(){
+      var searchVal = $searchContent.val();
+      var searchType = $searchType.html().toLowerCase();
+      $table.bootstrapTable('selectPage', 1);
+      $table.bootstrapTable('refresh');
+      return false;
     }
   </script>
   </div>

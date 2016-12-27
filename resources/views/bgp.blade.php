@@ -53,7 +53,7 @@
           <li @yield('home')><a href="/">Home</a></li>
           <li @yield('links')><a href="/links">Links</a></li>
           <li @yield('monitors')><a href="/monitors">Monitors</a></li>
-          <li @yield('origin')><a href="/origins">Origins</a></li>
+          <li @yield('origins')><a href="/origins">Origins</a></li>
         </ul>
       </div>
     </div>
